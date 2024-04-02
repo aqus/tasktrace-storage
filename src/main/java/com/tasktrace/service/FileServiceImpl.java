@@ -49,7 +49,7 @@ public class FileServiceImpl implements FileService {
     }
 
     private byte[] readFile(UUID uuid, long fileSize) {
-        try(InputStream inputStream = storageServiceProvider.getFile(uuid, fileSize)) {
+        try (InputStream inputStream = storageServiceProvider.getFile(uuid, fileSize)) {
             return inputStream.readAllBytes();
         } catch (Exception exception) {
             LOG.severe("Exception occurred when trying to read file with ID = " + uuid);

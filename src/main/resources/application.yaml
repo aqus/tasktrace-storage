@@ -65,6 +65,3 @@ minio:
   username: admin
   password: adminpass
   put-object-part-size: 5242880 # 5 MB
-
-app:
-  default-chunk-size: 3145728 # 3MB
