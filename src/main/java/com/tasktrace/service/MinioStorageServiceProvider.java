@@ -37,18 +37,6 @@ public class MinioStorageServiceProvider implements StorageServiceProvider {
     }
 
     @Override
-    public InputStream getStream(UUID uuid, long offset, long length) throws Exception {
-        return minioClient.getObject(
-                GetObjectArgs
-                        .builder()
-                        .bucket(MinioConfiguration.TASKTRACE_BUCKET_NAME)
-                        .offset(offset)
-                        .length(length)
-                        .object(uuid.toString())
-                        .build());
-    }
-
-    @Override
     public InputStream getFile(UUID uuid, long length) throws Exception {
         return minioClient.getObject(
                 GetObjectArgs

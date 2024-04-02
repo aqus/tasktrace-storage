@@ -4,7 +4,6 @@ import com.tasktrace.exception.EntityNotFoundException;
 import com.tasktrace.exception.StorageException;
 import com.tasktrace.model.FileMetadataEntity;
 import com.tasktrace.repository.FileMetadataRepository;
-import com.tasktrace.util.Range;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,29 +42,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public ChunkWithMetadata fetchChunk(UUID uuid, Range range) {
-        FileMetadataEntity fileMetadata = fileMetadataRepository.findById(uuid.toString())
-                .orElseThrow(() -> new EntityNotFoundException("File with id %s is not found".formatted(uuid)));
-        return new ChunkWithMetadata(fileMetadata, readChunk(uuid, range, fileMetadata.getSize()));
-    }
-
-    @Override
     public ChunkWithMetadata fetchFile(UUID uuid) {
         FileMetadataEntity fileMetadata = fileMetadataRepository.findById(uuid.toString())
                 .orElseThrow(() -> new EntityNotFoundException("File with id %s is not found".formatted(uuid)));
         return new ChunkWithMetadata(fileMetadata, readFile(uuid, fileMetadata.getSize()));
-    }
-
-    private byte[] readChunk(UUID uuid, Range range, long fileSize) {
-        long startPosition = range.getStart();
-        long endPosition = range.getEnd(fileSize);
-        int chunkSize = (int) (endPosition - startPosition + 1);
-        try(InputStream inputStream = storageServiceProvider.getStream(uuid, startPosition, chunkSize)) {
-            return inputStream.readAllBytes();
-        } catch (Exception exception) {
-            LOG.severe("Exception occurred when trying to read file with ID = " + uuid);
-            throw new StorageException(exception);
-        }
     }
 
     private byte[] readFile(UUID uuid, long fileSize) {
