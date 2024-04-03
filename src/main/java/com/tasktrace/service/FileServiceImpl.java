@@ -5,6 +5,7 @@ import com.tasktrace.exception.StorageException;
 import com.tasktrace.model.FileMetadataEntity;
 import com.tasktrace.repository.FileMetadataRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -26,6 +27,7 @@ public class FileServiceImpl implements FileService {
         this.storageServiceProvider = storageServiceProvider;
     }
 
+    @Transactional(rollbackFor = StorageException.class)
     @Override
     public UUID save(MultipartFile file) {
         try {
