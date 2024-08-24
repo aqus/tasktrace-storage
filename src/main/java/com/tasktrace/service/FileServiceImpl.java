@@ -1,6 +1,6 @@
 package com.tasktrace.service;
 
-import com.tasktrace.exception.EntityNotFoundException;
+import com.tasktrace.exception.FileNotFoundException;
 import com.tasktrace.exception.StorageException;
 import com.tasktrace.model.FileMetadataEntity;
 import com.tasktrace.repository.FileMetadataRepository;
@@ -46,7 +46,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public ChunkWithMetadata fetchFile(UUID uuid) {
         FileMetadataEntity fileMetadata = fileMetadataRepository.findById(uuid.toString())
-                .orElseThrow(() -> new EntityNotFoundException("File with id %s is not found".formatted(uuid)));
+                .orElseThrow(() -> new FileNotFoundException("File with id %s is not found".formatted(uuid)));
         return new ChunkWithMetadata(fileMetadata, readFile(uuid, fileMetadata.getSize()));
     }
 
