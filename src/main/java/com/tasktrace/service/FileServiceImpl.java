@@ -58,6 +58,4 @@ public class FileServiceImpl implements FileService {
             throw new StorageException(exception);
         }
     }
-
-    public record ChunkWithMetadata(FileMetadataEntity metadata, byte[] chunk) {}
 }

@@ -33,7 +33,7 @@ public class FileController {
 
     @GetMapping("api/v1/file/{uuid}")
     public ResponseEntity<byte[]> readFile(@PathVariable UUID uuid) {
-        FileServiceImpl.ChunkWithMetadata chunkWithMetadata = fileService.fetchFile(uuid);
+        FileService.ChunkWithMetadata chunkWithMetadata = fileService.fetchFile(uuid);
         return ResponseEntity.status(HttpStatus.OK)
                 .header(CONTENT_TYPE, chunkWithMetadata.metadata().getHttpContentType())
                 .header(CONTENT_LENGTH, String.valueOf(chunkWithMetadata.metadata().getSize()))
